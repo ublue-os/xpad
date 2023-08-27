@@ -29,10 +29,6 @@ kmodtool --target %{_target_cpu} --kmodname %{name} %{?buildforkernels:--%{build
 
 %setup -q -c xpad-noone-master
 
-# Rename xpad driver to xpad-noone
-mv xpad-noone-master/xpad.c xpad-noone-master/xpad-nooone.c
-sed -i 's@xpad.o@xpad-noone.o@g' xpad-noone-master/Makefile
-
 find . -type f -name '*.c' -exec sed -i "s/#VERSION#/%{version}/" {} \+
 
 for kernel_version  in %{?kernel_versions} ; do

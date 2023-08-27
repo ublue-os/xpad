@@ -1,4 +1,4 @@
-obj-m = xpad.o
+obj-m = xpad-noone.o
 
 KVERSION = $(shell uname -r)
 all:

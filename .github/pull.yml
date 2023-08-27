@@ -2,5 +2,5 @@ version: "1"
 rules:
   - base: master
     upstream: paroj:master
-    mergeMethod: merge
+    mergeMethod: rebase
     mergeUnstable: false
