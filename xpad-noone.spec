@@ -22,11 +22,15 @@ Linux Kernel Driver for the Xbox/ Xbox 360 Controllers
 %prep
 %setup -q -c xpad-noone-master
 
-%build
+%install
+install -D -m 0644 xpad-noone-master/xpad-noone-blacklist.conf %{buildroot}%{_prefix}/lib/modprobe.d/xpad-noone-blacklist.conf
+install -D -m 0644 xpad-noone-master/xpad-noone.conf %{buildroot}%{_modulesloaddir}/xpad-noone.conf
 
 %files
 %doc xpad-noone-master/README.md
 %license xpad-noone-master/LICENSE
+%{_prefix}/lib/modprobe.d/xpad-noone-blacklist.conf
+%{_modulesloaddir}/xpad-noone.conf
 
 %changelog
 {{{ git_dir_changelog }}}

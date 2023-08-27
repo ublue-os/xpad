@@ -13,6 +13,7 @@ URL:      https://github.com/ublue-os/xpad-noone
 Source:   %{url}/archive/refs/heads/master.tar.gz
 
 BuildRequires: kmodtool
+BuildRequires: sed
 
 %{expand:%(kmodtool --target %{_target_cpu} --kmodname %{name} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null) }
 
@@ -28,6 +29,10 @@ kmodtool --target %{_target_cpu} --kmodname %{name} %{?buildforkernels:--%{build
 
 %setup -q -c xpad-noone-master
 
+# Rename xpad driver to xpad-noone
+mv xpad-noone-master/xpad.c xpad-noone-master/xpad-nooone.c
+sed -i 's@xpad.o@xpad-noone.o@g' xpad-noone-master/Makefile
+
 find . -type f -name '*.c' -exec sed -i "s/#VERSION#/%{version}/" {} \+
 
 for kernel_version  in %{?kernel_versions} ; do
@@ -42,8 +47,8 @@ done
 %install
 for kernel_version in %{?kernel_versions}; do
  mkdir -p %{buildroot}%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/
- install -D -m 755 _kmod_build_${kernel_version%%___*}/xpad.ko %{buildroot}%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/
- chmod a+x %{buildroot}%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/xpad.ko
+ install -D -m 755 _kmod_build_${kernel_version%%___*}/xpad-noone.ko %{buildroot}%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/
+ chmod a+x %{buildroot}%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/xpad-noone.ko
 done
 %{?akmod_install}
 
